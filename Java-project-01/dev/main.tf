@@ -5,14 +5,29 @@ data "aws_vpc" "default" {
   default = true
 }
 
-data "aws_subnet_ids" "default" {
-  vpc_id = data.aws_vpc.default.id
+# 🔍 Get subnet ID in the default VPC
+data "aws_subnet" "default" {
+  filter {
+    name   = "vpc-id"
+    values = [data.aws_vpc.default.id]
+  }
+
+  filter {
+    name   = "availability-zone"
+    values = [var.availability_zone]
+  }
+
+  # Most default subnets have this tag
+  filter {
+    name   = "default-for-az"
+    values = ["true"]
+  }
 }
 
 # Optional: Use a local var for cleaner references
 locals {
   default_vpc_id  = data.aws_vpc.default.id
-  default_subnet  = data.aws_subnet_ids.default.ids[0]
+  default_subnet  = data.aws_subnet.default.id
 }
 
 # ───────────────────────────────
@@ -45,4 +60,8 @@ module "ec2_instance" {
   key_name           = module.key_pair.key_name
   security_group_id  = module.security_group.security_group_id
   name               = var.ec2_name
+}
+
+output "ec2_public_ip" {
+  value = module.ec2_instance.public_ip
 }

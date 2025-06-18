@@ -1,0 +1,33 @@
+---
+- name: Install Java 11
+  apt:
+    name: openjdk-11-jdk
+    state: present
+    update_cache: yes
+
+- name: Create tomcat user
+  user:
+    name: tomcat
+    shell: /bin/false
+
+- name: Download Tomcat
+  get_url:
+    url: "https://dlcdn.apache.org/tomcat/tomcat-10/v10.1.42/bin/apache-tomcat-10.1.42.tar.gz"
+    dest: /opt/
+
+- name: Extract Tomcat
+  unarchive:
+    src: /opt/apache-tomcat-10.1.42.tar.gz
+    dest: /opt/
+    remote_src: yes
+
+- name: Copy WAR file to Tomcat
+  copy:
+    src: dptweb-1.0.war
+    dest: /opt/apache-tomcat-10.1.42/webapps/dptweb.war
+    owner: tomcat
+    group: tomcat
+    mode: '0644'
+
+- name: Restart Tomcat
+  shell: "/opt/apache-tomcat-10.1.42/bin/shutdown.sh && sleep 5 && /opt/apache-tomcat-10.1.42/bin/startup.sh"
