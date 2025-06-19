@@ -23,7 +23,7 @@
 
 - name: Copy WAR file to Tomcat
   copy:
-    src: dptweb-1.0.war
+    src: /tmp/dptweb-1.0.war
     dest: /opt/apache-tomcat-10.1.42/webapps/dptweb.war
     owner: tomcat
     group: tomcat
