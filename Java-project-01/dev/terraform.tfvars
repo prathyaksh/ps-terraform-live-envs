@@ -1,7 +1,0 @@
-key_name           = "java-project-01-key"
-public_key_path    = "C:/Users/pc/.ssh/java-project-01-key.pub"
-sg_name            = "java-project-01-sg"
-ami_id             = "ami-0c55b159cbfafe1f0"
-instance_type      = "t3a.nano"
-availability_zone  = "eu-north-1a"
-ec2_name           = "java-ec2-dev"

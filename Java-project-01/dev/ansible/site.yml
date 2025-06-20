@@ -1,0 +1,6 @@
+---
+- name: Deploy Java App to EC2
+  hosts: web
+  become: true
+  roles:
+    - deploy_java_app
