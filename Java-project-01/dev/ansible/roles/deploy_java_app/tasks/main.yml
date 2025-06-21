@@ -21,13 +21,11 @@
     dest: /opt/
     remote_src: yes
 
-- name: Copy WAR file to Tomcat
-  copy:
-    src: /tmp/dptweb-1.0.war
-    dest: /opt/apache-tomcat-10.1.42/webapps/dptweb.war
-    owner: tomcat
-    group: tomcat
-    mode: '0644'
+- name: Move WAR file into Tomcat webapps
+  shell: |
+    mv /tmp/dptweb-1.0.war /opt/apache-tomcat-10.1.42/webapps/dptweb.war
+    chown tomcat:tomcat /opt/apache-tomcat-10.1.42/webapps/dptweb.war
+    chmod 644 /opt/apache-tomcat-10.1.42/webapps/dptweb.war
 
 - name: Restart Tomcat
   shell: "/opt/apache-tomcat-10.1.42/bin/shutdown.sh && sleep 5 && /opt/apache-tomcat-10.1.42/bin/startup.sh"
